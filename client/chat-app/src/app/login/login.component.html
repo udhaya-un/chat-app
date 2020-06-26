@@ -1,0 +1,28 @@
+<div class="container mt-4">
+	<div class="d-flex justify-content-center h-100">
+		<div class="card">
+			<div class="card-header">
+				<h3>Sign In</h3>
+			</div>
+			<div class="card-body">
+				<form [formGroup]="loginForm">
+					<div class="input-group form-group mt-4">
+						<input type="email" class="form-control" placeholder="email" [(ngModel)]='user.email' name='user'
+                        formControlName="email" id="email" [ngStyle]="{'border-color': borderStyle.email}"
+                        aria-describedby="email" placeholder="Email" [ngClass]="{ 'is-invalid': submitted && f.email.errors }">
+                        <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                            <div *ngIf="f.email.errors.required">Email is required</div>
+                            <div *ngIf="f.email.errors.email">Email must be a valid email address</div>
+                        </div>
+					</div>
+					<div class="input-group form-group mt-4">
+						<input type="password" class="form-control" placeholder="password" [(ngModel)]='user.auth_pass' id="password" formControlName="password" [ngStyle]="{'border-color': borderStyle.auth_pass}">
+					</div>
+					<div class="row form-group justify-content-center mt-12">
+						<input type="submit" value="Login" (click)='Login()' class="btn float-right login_btn">
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

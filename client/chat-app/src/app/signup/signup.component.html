@@ -1,0 +1,37 @@
+<div class="container mt-3">
+	<div class="d-flex justify-content-center h-100">
+		<div class="card">
+			<div class="card-header">
+				<h3>Sign Up</h3>
+			</div>
+			<div class="card-body">
+				<form [formGroup]="signUpForm">
+                    <div class="input-group form-group">
+						<input type="text" class="form-control" placeholder="first name" [(ngModel)]='user.firstname' id="firstname" formControlName="firstname">
+                    </div>
+                    <div class="input-group form-group">
+						<input type="text" class="form-control" placeholder="last name" [(ngModel)]='user.lastname' id="lastname" formControlName="lastname">
+                    </div>
+					<div class="input-group form-group">
+						<input type="text" class="form-control" placeholder="username" [(ngModel)]='user.username' id="username" formControlName="username">
+					</div>
+					<div class="input-group form-group">
+						<input type="email" class="form-control" placeholder="email" [(ngModel)]='user.email' name='user'
+                        formControlName="email" id="email" [ngStyle]="{'border-color': borderStyle.email}"
+                        aria-describedby="email" placeholder="Email" [ngClass]="{ 'is-invalid': submitted && f.email.errors }">
+                        <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                            <div *ngIf="f.email.errors.required">Email is required</div>
+                            <div *ngIf="f.email.errors.email">Email must be a valid email address</div>
+                        </div>
+                    </div>
+					<div class="input-group form-group">
+						<input type="password" class="form-control" placeholder="password" [(ngModel)]='user.auth_pass' id="password" formControlName="password" [ngStyle]="{'border-color': borderStyle.password}">
+                    </div>
+					<div class="row form-group justify-content-center">
+						<input type="submit" value="Register" (click)='Register()' class="btn float-right login_btn">
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
