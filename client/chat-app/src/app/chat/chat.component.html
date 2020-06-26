@@ -1,1 +1,26 @@
-<p>chat works!</p>
+<div class="container">
+  <div class="row">
+      <div class="col-sm-6 mt-4">
+          <select name="roomInput" id="roomInput" class="form-control" (change)="selectedUser($event.target.value)">
+            <option value="">Select Receiver</option>
+            <option *ngFor="let user of all_users" [value]="user.email" >{{user.email}}</option>
+        </select>
+      </div>
+  </div>
+
+  <div class="row mt-4">
+      <div class="col-sm-6 square">
+          <div *ngFor="let item of messageArray">
+          <span><strong>{{item.user}} : </strong> {{item.message}}</span>
+          </div>
+      </div>
+  </div>
+  <div class="row">
+      <div class="col-sm-6 mt-4">
+          <input type="text" class="form-control" [(ngModel)]="messageText">            
+      </div>
+      <div class="col-sm-2 mt-4">
+              <button type="button" class="btn btn-success pull-right" (click)="sendMessage()">Send</button>
+      </div>
+  </div>
+</div>

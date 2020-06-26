@@ -9,9 +9,9 @@ export class UserDao {
 
 
     public save(userData, callback: CallableFunction) {
-        this.verify_username(userData.username, (user) => {
+        this.verify_email(userData.email, (user) => {
             if (user) {
-                callback({ message: "username already exist!" })
+                callback({ message: "email already exist!" })
             } else {
                 let user = new this.User(userData);
                 user.save((err, user) => {
@@ -99,13 +99,14 @@ export class UserDao {
                 callback(err);
             }
             if (response === null || response.length === 0) {
-                response = 'Incorrect Username or Password';
+                response = 'Incorrect email or Password';
                 callback(response);
             } else {
                 const accessToken = jwt.sign({ username: user.username }, accessTokenSecret);
                 let res = {
                     "message": "successfully loggedin!",
-                    "authToken": accessToken
+                    "authToken": accessToken,
+                    "email": user.email
                 }
                 callback(res);
             }

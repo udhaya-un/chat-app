@@ -5,6 +5,7 @@ import * as bodyParser from "body-parser";
 import { Routes } from "./routes/routes";
 import * as cors from 'cors';
 import * as mongoose from "mongoose";
+import * as socket from 'socket.io'
 
 const PORT = 3005;
 
@@ -33,6 +34,24 @@ class App {
 
 }
 
-new App().app.listen(PORT, () => {
+var server = new App().app.listen(PORT, () => {
     console.log('Express server listening on port ' + PORT);
 })
+
+// Socket setup
+let io = socket(server)
+var users = []
+io.on('connection',(socket)=>{
+
+    console.log('new connection made.', socket.id);
+    socket.on("user_connected", (username)=>{
+        users[username] = socket.id
+
+        io.emit("user_connected", username)
+    })
+
+    socket.on("send_message", (data)=>{
+        var socketId = users[data.receiver]
+        io.to(socketId).emit("new_message", data)
+    })
+});

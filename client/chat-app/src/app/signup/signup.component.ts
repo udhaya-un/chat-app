@@ -56,7 +56,6 @@ export class SignupComponent implements OnInit {
       return;
     }
     this.user.xid = uuid.v5()
-    console.log(this.user)
     this.apiService.post('http://localhost:3005/chat/user/save', this.user).subscribe(user=>{
       
     })

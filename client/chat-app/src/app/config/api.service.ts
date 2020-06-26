@@ -29,11 +29,11 @@ export class ApiService {
     }
 
     get(path: string, params: HttpParams = new HttpParams()): Observable<any> {
-        return this.http.get(`${path}`, { params }).pipe(catchError(this.formatErrors));
+        return this.http.get(`${path}`, { params: params, headers: this.setHeaders() }).pipe(catchError(this.formatErrors));
     }
 
     delete(path): Observable<any> {
-        return this.http.delete(`${path}`).pipe(catchError(this.formatErrors));
+        return this.http.delete(`${path}`, { headers: this.setHeaders() }).pipe(catchError(this.formatErrors));
     }
 
     post(path: string, body: Object = {}): Observable<any> {
@@ -41,7 +41,7 @@ export class ApiService {
     }
 
     put(path: string, body: Object = {}): Observable<any> {
-        return this.http.put(`${path}`, JSON.stringify(body)).pipe(retry(3), catchError(this.formatErrors));
+        return this.http.put(`${path}`, JSON.stringify(body), { headers: this.setHeaders() }).pipe(retry(3), catchError(this.formatErrors));
     }
 
 }
