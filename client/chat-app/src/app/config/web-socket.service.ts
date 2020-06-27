@@ -10,7 +10,8 @@ export class MyServiceEvent {
 
 export class WebSocketService {
     socket: io.Socket;
-    public onChange: EventEmitter<MyServiceEvent> = new EventEmitter<MyServiceEvent>();
+    public send: EventEmitter<MyServiceEvent> = new EventEmitter<MyServiceEvent>();
+    public receive: EventEmitter<MyServiceEvent> = new EventEmitter<MyServiceEvent>();
 
     constructor() {
         this.socket = io.connect('http://localhost:3005');
@@ -20,15 +21,14 @@ export class WebSocketService {
         this.newMessage()
     }
 
-    
-
     sendMessage(data){
         this.socket.emit('send_message', data);
     }
 
     newMessage(){
+        console.log('i am in new message')
         this.socket.on("new_message", (data)=>{
-            this.onChange.emit(data)
+            this.receive.emit(data)
             
         })
     }

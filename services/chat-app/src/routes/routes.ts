@@ -1,8 +1,10 @@
 import { UserController } from "../controllers/user_controller";
+import { ChatController } from "../controllers/chat_controller";
 
 export class Routes {
 
     public userController: UserController = new UserController();
+    public chatController: ChatController = new ChatController();
 
     public routes(base, app): void {
 
@@ -12,5 +14,9 @@ export class Routes {
         app.route(`${base}/user/get`).get(this.userController.get_by_id);
         app.route(`${base}/user/delete`).delete(this.userController.delete_by_id);
         app.route(`${base}/user/login`).post(this.userController.login);
+
+        app.route(`${base}/chat/save`).post(this.chatController.save);
+
+
     }
 }

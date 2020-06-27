@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiService } from '../config/api.service';
 import { AppService } from '../app.service';
-import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { Router } from '@angular/router';
+import {Constants} from '../config/Constant'
 
 @Component({
   selector: 'app-login',
@@ -46,7 +47,7 @@ export class LoginComponent implements OnInit {
     if (invalid) {
       return;
     }
-    this.apiService.post('http://localhost:3005/chat/user/login', this.user).subscribe(user=>{
+    this.apiService.post(`${Constants.apiBaseUrl}/user/login`, this.user).subscribe(user=>{
       this.appService.saveToken(user.authToken)
       sessionStorage.setItem('email', user.email)
       if(user.authToken){

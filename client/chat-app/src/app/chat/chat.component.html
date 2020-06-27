@@ -1,4 +1,4 @@
-<div class="container">
+<!-- <div class="container">
   <div class="row">
       <div class="col-sm-6 mt-4">
           <select name="roomInput" id="roomInput" class="form-control" (change)="selectedUser($event.target.value)">
@@ -10,8 +10,11 @@
 
   <div class="row mt-4">
       <div class="col-sm-6 square">
-          <div *ngFor="let item of messageArray">
+          <div *ngFor="let item of receivedmessageArray">
           <span><strong>{{item.user}} : </strong> {{item.message}}</span>
+          </div>
+          <div *ngFor="let item of sendmessageArray">
+            <span><strong>{{item.receiver}} : </strong> {{item.message}}</span>
           </div>
       </div>
   </div>
@@ -23,4 +26,45 @@
               <button type="button" class="btn btn-success pull-right" (click)="sendMessage()">Send</button>
       </div>
   </div>
-</div>
+</div> -->
+
+
+<div class="container">
+  <h3 class=" text-center">Messaging</h3>
+  <div class="messaging">
+        <div class="inbox_msg">
+          <div class="inbox_people">
+            <div class="inbox_chat">
+              <div class="chat_list" *ngFor="let user of all_users" (click)="selectedUser(user)">
+                <div class="chat_people">
+                  <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                  <div class="chat_ib">
+                    <h5>{{user.firstname}} {{user.lastname}}</h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mesgs" *ngIf="showMsgBox">
+            <div class="msg_history">
+              <div class="incoming_msg" *ngFor="let item of messageArray">
+                <div class="received_msg">
+                  <div class="received_withd_msg mt-2 mb-2" *ngIf="!item.isSender">
+                    <p>{{item.message}}</p>
+                    </div>
+                    <div class="sent_msg mt-2 mb-2" *ngIf="item.isSender">
+                      <p>{{item.message}}</p>
+                    </div>
+              </div>
+            </div>
+          </div>
+          <div class="type_msg">
+            <div class="input_msg_write">
+              <input type="text" class="write_msg" placeholder="Type a message"  [(ngModel)]="messageText"/>
+              <button class="msg_send_btn" type="button" value="send" (click)="sendMessage()"></button>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>

@@ -3,6 +3,7 @@ import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { AppService } from '../app.service';
 import { ApiService } from '../config/api.service';
 import * as uuid from 'uuid';
+import { Constants } from '../config/Constant';
 
 @Component({
   selector: 'app-signup',
@@ -55,8 +56,8 @@ export class SignupComponent implements OnInit {
     if (invalid) {
       return;
     }
-    this.user.xid = uuid.v5()
-    this.apiService.post('http://localhost:3005/chat/user/save', this.user).subscribe(user=>{
+    this.user.xid = uuid.v4()
+    this.apiService.post(`${Constants.apiBaseUrl}/user/save`, this.user).subscribe(user=>{
       
     })
   }

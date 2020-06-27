@@ -18,7 +18,7 @@ class App {
     constructor() { 
         this.initializeMiddlewares();
         this.mongoSetup();
-        this.routePrv.routes('/chat', this.app);
+        this.routePrv.routes('/api', this.app);
     }
 
     private initializeMiddlewares() {
