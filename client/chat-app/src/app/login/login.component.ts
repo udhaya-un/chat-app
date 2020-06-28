@@ -50,6 +50,7 @@ export class LoginComponent implements OnInit {
     this.apiService.post(`${Constants.apiBaseUrl}/user/login`, this.user).subscribe(user=>{
       this.appService.saveToken(user.authToken)
       sessionStorage.setItem('email', user.email)
+      sessionStorage.setItem('id', user.id)
       if(user.authToken){
         this.router.navigate(['/chat'])
       }

@@ -1,10 +1,8 @@
 import { Request, Response, NextFunction, response } from 'express';
 import { ChatService } from '../services/chat_service';
 import { UserService } from '../services/user_service';
-import * as jwt from 'jsonwebtoken'
 
 let chatService = new ChatService()
-const accessTokenSecret = 'DQKt1uvmkkqcJbXD66KbJQ';
 
 export class ChatController {
 
@@ -12,10 +10,10 @@ export class ChatController {
 
     public save(req: Request, res: Response) {
         const token = req.headers['authorization']
-                    chatService.save(req, (response) => {
-                        res.status(200); // status for the response
-                        res.json(response);
-                    })
+        chatService.save(req, (response) => {
+            res.status(200); // status for the response
+            res.json(response);
+        })
     }
 
     public update_by_id(req: Request, res: Response) {
@@ -47,22 +45,22 @@ export class ChatController {
         })
     }
 
-    public login(req: Request, res: Response) {
-        chatService.login(req, (response) => {
+    public get_sender_and_receiver_chat(req: Request, res: Response) {
+        chatService.get_sender_and_receiver_chat(req, (response) => {
             res.status(200); // status for the response
-            res.json(response)
+            res.json(response);
         })
     }
 
-    public verify_user(token, callback: CallableFunction) {
-        var decoded = jwt.verify(token, accessTokenSecret, function(err, decoded) {
-            // err
-            if (err){
-                callback(err)
-            } else {
-                callback(decoded)
-            }
-          });
-    }
+    // public verify_user(token, callback: CallableFunction) {
+    //     var decoded = jwt.verify(token, accessTokenSecret, function(err, decoded) {
+    //         // err
+    //         if (err){
+    //             callback(err)
+    //         } else {
+    //             callback(decoded)
+    //         }
+    //       });
+    // }
 
 }

@@ -27,5 +27,7 @@ export class HeaderComponent implements OnInit {
   }
   Logout(){
     sessionStorage.removeItem('authToken')
+    sessionStorage.removeItem('email')
+    sessionStorage.removeItem('id')
   }
 }

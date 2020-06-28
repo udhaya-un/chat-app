@@ -89,7 +89,7 @@ export class UserDao {
     }
 
     public login(user, callback: CallableFunction) {
-        this.User.find({
+        this.User.findOne({
             $and: [
                 { $or: [{ email: user.email }, { username: user.username }] },
                 { auth_pass: user.auth_pass }
@@ -102,11 +102,12 @@ export class UserDao {
                 response = 'Incorrect email or Password';
                 callback(response);
             } else {
-                const accessToken = jwt.sign({ username: user.username }, accessTokenSecret);
+                const accessToken = jwt.sign({ username: user.email }, accessTokenSecret);
                 let res = {
                     "message": "successfully loggedin!",
                     "authToken": accessToken,
-                    "email": user.email
+                    "email": response.email,
+                    "id": response._id
                 }
                 callback(res);
             }

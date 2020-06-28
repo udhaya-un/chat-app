@@ -16,6 +16,7 @@ export class Routes {
         app.route(`${base}/user/login`).post(this.userController.login);
 
         app.route(`${base}/chat/save`).post(this.chatController.save);
+        app.route(`${base}/chat/get_by_sender_receiver/:sender_id/:receiver_id`).get(this.chatController.get_sender_and_receiver_chat);
 
 
     }

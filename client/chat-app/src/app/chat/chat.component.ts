@@ -12,6 +12,8 @@ export class ChatComponent implements OnInit {
   user: String;
   room: String;
   receiver: String;
+  receiver_id: String;
+  sender_id: String;
   showMsgBox: Boolean;
   messageText: String;
   isSender: Boolean;
@@ -34,9 +36,10 @@ export class ChatComponent implements OnInit {
 
   sendMessage() {
     if (this.messageText) {
-      var data = { user: this.user, receiver: this.receiver, message: this.messageText }
+     var data = { user: this.user, receiver: this.receiver, message: this.messageText }
       this.webSocketService.sendMessage(data);
-      this.apiService.post(`${Constants.apiBaseUrl}/chat/save`, data).subscribe(message => {
+      var msg = {sender_id: this.sender_id, receiver_id: this.receiver_id, message: this.messageText}
+      this.apiService.post(`${Constants.apiBaseUrl}/chat/save`, msg).subscribe(message => {
       })
     }
     data['isSender'] = true
@@ -45,9 +48,9 @@ export class ChatComponent implements OnInit {
   }
 
   selectedUser(receiver) {
-    if(this.receiver === receiver){
-      this.messageArray = []
-    }  
+    console.log('receiver', receiver)
+    this.receiver_id = receiver._id
+    this.get_all_user_chat(receiver._id)
     this.receiver = receiver.email
     this.showMsgBox = true
   }
@@ -58,6 +61,21 @@ export class ChatComponent implements OnInit {
         if (usr.email !== sessionStorage.getItem('email')) {
           this.all_users.push(usr)
         }
+      });
+    })
+  }
+
+  get_all_user_chat(receiver_id) {
+    this.sender_id = sessionStorage.getItem('id')
+    this.apiService.get(`${Constants.apiBaseUrl}/chat/get_by_sender_receiver/${this.sender_id}/${receiver_id}`).subscribe(data => {
+      this.messageArray = []
+      data.forEach(usr => {
+        if (this.sender_id === usr.sender_id){
+          usr['isSender'] = true
+        }else {
+          usr['isSender'] = false
+        }
+        this.messageArray.push(usr)
       });
     })
   }

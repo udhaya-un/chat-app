@@ -9,15 +9,15 @@ export class ChatDao {
 
 
     public save(chatData, callback: CallableFunction) {
-            
-                let chat = new this.Chat(chatData);
-                chat.save((err, chat) => {
-                    if (err) {
-                        callback(err);
-                    } else {
-                        callback(chat);
-                    }
-                });
+
+        let chat = new this.Chat(chatData);
+        chat.save((err, chat) => {
+            if (err) {
+                callback(err);
+            } else {
+                callback(chat);
+            }
+        });
 
     }
 
@@ -52,12 +52,20 @@ export class ChatDao {
         });
     }
 
-    public get_by_email(email, callback: CallableFunction) {
-        this.Chat.find({ email: email }, (err, chat) => {
+    public get_by_sender_receiver_id(sender, receiver, callback: CallableFunction) {
+        this.Chat.find({$or: [{$and: [
+            { sender_id: sender },
+            { receiver_id: receiver }
+        ]}, {$and: [
+            { sender_id: receiver },
+            { receiver_id: sender }
+        ]}]
+            
+        }, (err, chat) => {
             if (err) {
-                callback(err);
+                callback(err)
             } else {
-                callback(chat);
+                callback(chat)
             }
         });
     }
@@ -71,4 +79,5 @@ export class ChatDao {
             }
         });
     }
+
 }
