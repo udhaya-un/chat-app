@@ -1,8 +1,8 @@
 # Simple private Chat Application with Socket.io
 
 ##  prerequisite
-      [Node.js](https://nodejs.org/en/)
-      [Angular9](https://angular.io/)
+      ![Node.js](https://nodejs.org/en/)
+      ![Angular9](https://angular.io/)
      
 ## Client
          
