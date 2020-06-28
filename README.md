@@ -13,6 +13,6 @@
 
 # Service
         To run the service
-			1. npm i
-			2. npm run dev - developement
-			3. npm run prod - production
+		1. npm i
+		2. npm run dev - developement
+		3. npm run prod - production
