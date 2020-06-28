@@ -9,8 +9,7 @@ let ChatSchema = mongoose.Schema({
   receiver_id: {type: String, required: true},
   sender_id: {type: String, required: true},
   message: {type: String, required: true},
-  isReceiverDelete: {type: Boolean, default: false},
-  isSenderDelete: {type: Boolean, default: false},
+  read: {type: Boolean, default: false}
 },{
   timestamps: true
 });

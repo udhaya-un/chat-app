@@ -1,9 +1,10 @@
 import { Request, NextFunction } from 'express';
 import { ChatDao } from '../daos/chat_dao';
-import { UserDao } from '../daos/user_dao';
+import { DeletedChatDao } from '../daos/deleted_chat_dao';
+import ChatBackUpModel from '../models/backup_chat';
 
 let chatDao = new ChatDao()
-let userDao = new UserDao()
+let deletedChatDao = new DeletedChatDao()
 const accessTokenSecret = 'DQKt1uvmkkqcJbXD66KbJQ';
 
 export class ChatService {
@@ -46,11 +47,70 @@ export class ChatService {
         })
     }
 
-    get_sender_and_receiver_chat(req: Request, callback: CallableFunction) {
+    public get_sender_and_receiver_chat(req: Request, callback: CallableFunction) {
         let sender = req.params.sender_id
         let receiver = req.params.receiver_id
         chatDao.get_by_sender_receiver_id(sender, receiver, (chat) => {
             callback(chat)
+        })
+    }
+
+    public backup_chat(req: Request, callback: CallableFunction) {
+        let sender = req.params.sender_id
+        chatDao.get_by_sender_id(sender, async (chats) => {
+            if (chats) {
+
+                let all_chat = []
+                await chats.map(chat => {
+                    delete chat._id
+                    delete chat.__v
+                    all_chat.push(chat)
+                    if (all_chat.length === chats.length) {
+                        let backup_chat = { 'user_id': sender, 'chat_backup': all_chat }
+                        let chat = new ChatBackUpModel(backup_chat);
+                        chat.save((err, chat) => {
+                            if (err) {
+                                callback(err);
+                            } else {
+                                callback(chat);
+                            }
+                        });
+                    }
+                })
+            }
+        })
+    }
+
+    public delete_chat_by_sender(req: Request, callback: CallableFunction) {
+        let sender = req.params.sender_id
+        let receiver = req.params.receiver_id
+        let updatedchats = []
+        chatDao.get_by_sender_receiver_id(sender, receiver, (chats) => {
+            if (chats.length === 0) {
+                callback(chats)
+            } else {
+                return new Promise((resolve, reject) => {
+                    chats.map((msg) => {
+                        let deletedMsg = {}
+                        deletedMsg['owner_id'] = sender
+                        deletedMsg['message_id'] = msg._id
+                        deletedChatDao.get_by_owner_msg(deletedMsg, (msgExist) => {
+                            if (!msgExist) {
+                                deletedChatDao.save(deletedMsg, (updatedChat) => {
+                                    updatedchats.push(updatedChat)
+                                    if (updatedchats.length === chats.length) {
+                                        callback({ message: "deleted all chats", updatedchats: updatedchats })
+                                    }
+                                })
+                            }
+                        })
+                    })
+                    return resolve()
+                }).then(res => {
+                    callback()
+                })
+
+            }
         })
     }
 

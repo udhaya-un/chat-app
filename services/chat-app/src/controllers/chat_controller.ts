@@ -52,6 +52,21 @@ export class ChatController {
         })
     }
 
+    public delete_chat_by_sender(req: Request, res: Response) {
+        chatService.delete_chat_by_sender(req, (response) => {
+            res.status(200); // status for the response
+            res.json(response);
+        })
+    }
+
+    public backup_chat(req: Request, res: Response){
+        chatService.backup_chat(req, (response) => {
+            res.status(200); // status for the response
+            res.json(response);
+        })
+
+    }
+
     // public verify_user(token, callback: CallableFunction) {
     //     var decoded = jwt.verify(token, accessTokenSecret, function(err, decoded) {
     //         // err

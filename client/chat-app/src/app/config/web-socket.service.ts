@@ -26,7 +26,6 @@ export class WebSocketService {
     }
 
     newMessage(){
-        console.log('i am in new message')
         this.socket.on("new_message", (data)=>{
             this.receive.emit(data)
             

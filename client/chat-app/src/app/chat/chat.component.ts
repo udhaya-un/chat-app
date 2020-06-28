@@ -36,9 +36,9 @@ export class ChatComponent implements OnInit {
 
   sendMessage() {
     if (this.messageText) {
-     var data = { user: this.user, receiver: this.receiver, message: this.messageText }
+      var data = { user: this.user, receiver: this.receiver, message: this.messageText }
       this.webSocketService.sendMessage(data);
-      var msg = {sender_id: this.sender_id, receiver_id: this.receiver_id, message: this.messageText}
+      var msg = { sender_id: this.sender_id, receiver_id: this.receiver_id, message: this.messageText }
       this.apiService.post(`${Constants.apiBaseUrl}/chat/save`, msg).subscribe(message => {
       })
     }
@@ -48,7 +48,6 @@ export class ChatComponent implements OnInit {
   }
 
   selectedUser(receiver) {
-    console.log('receiver', receiver)
     this.receiver_id = receiver._id
     this.get_all_user_chat(receiver._id)
     this.receiver = receiver.email
@@ -69,14 +68,44 @@ export class ChatComponent implements OnInit {
     this.sender_id = sessionStorage.getItem('id')
     this.apiService.get(`${Constants.apiBaseUrl}/chat/get_by_sender_receiver/${this.sender_id}/${receiver_id}`).subscribe(data => {
       this.messageArray = []
-      data.forEach(usr => {
-        if (this.sender_id === usr.sender_id){
-          usr['isSender'] = true
-        }else {
-          usr['isSender'] = false
-        }
-        this.messageArray.push(usr)
-      });
+      if(data){
+        this.get_deleted_chat_by_sender(data)
+      }   
+    })
+  }
+
+  get_deleted_chat_by_sender(users) {
+    this.apiService.get(`${Constants.apiBaseUrl}/chat/deleted_chat_by_sender/${this.sender_id}`).subscribe(data => {
+      if (data.length === 0) {
+        users.map(userMsg => {
+          if (this.sender_id === userMsg.sender_id) {
+            userMsg['isSender'] = true
+          } else {
+            userMsg['isSender'] = false
+          }
+          this.messageArray.push(userMsg)
+        })
+      } else { 
+        users.map(userMsg => {
+          if (this.sender_id === userMsg.sender_id) {
+            userMsg['isSender'] = true
+          } else {
+            userMsg['isSender'] = false
+          }
+          if (!data.messages.includes(userMsg._id)) {
+              this.messageArray.push(userMsg)
+          }
+        })
+      }
+     
+
+    })
+
+  }
+
+  deleteMessages(){
+    this.apiService.get(`${Constants.apiBaseUrl}/chat/delete_chat_by_sender/${this.sender_id}/${this.receiver_id}`).subscribe(data=>{
+      this.get_all_user_chat(this.receiver_id)
     })
   }
 

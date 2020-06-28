@@ -53,14 +53,49 @@ export class ChatDao {
     }
 
     public get_by_sender_receiver_id(sender, receiver, callback: CallableFunction) {
-        this.Chat.find({$or: [{$and: [
-            { sender_id: sender },
-            { receiver_id: receiver }
-        ]}, {$and: [
-            { sender_id: receiver },
-            { receiver_id: sender }
-        ]}]
-            
+        this.Chat.find({
+            $or: [{
+                $and: [
+                    { sender_id: sender },
+                    { receiver_id: receiver }
+                ]
+            }, {
+                $and: [
+                    { sender_id: receiver },
+                    { receiver_id: sender }
+                ]
+            }]
+
+        }, (err, chat) => {
+            if (err) {
+                callback(err)
+            } else {
+                callback(chat)
+            }
+        });
+    }
+    public get_by_sender_id(sender, callback: CallableFunction) {
+        this.Chat.find({
+            $or: [
+                    { sender_id: sender },
+                    { receiver_id: sender }
+                ]
+
+        }, (err, chat) => {
+            if (err) {
+                callback(err)
+            } else {
+                callback(chat)
+            }
+        });
+    }
+
+    public delete_chat_by_sender(sender, receiver, callback: CallableFunction) {
+        this.Chat.find({
+            $or: [
+                { sender_id: sender },
+                { receiver_id: sender }
+            ]
         }, (err, chat) => {
             if (err) {
                 callback(err)

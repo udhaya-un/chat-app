@@ -1,33 +1,41 @@
 import { Request, Response, NextFunction, response } from 'express';
-import { UserService } from '../services/user_service';
+import { DeletedChatService } from '../services/deleted_chat_service';
 
-let userService = new UserService()
+let deletedChatService = new DeletedChatService()
 
-export class UserController {
+export class DeletedChatController {
 
     public save(req: Request, res: Response) {
-        userService.save(req, (response) => {
+        const token = req.headers['authorization']
+        deletedChatService.save(req, (response) => {
             res.status(200); // status for the response
             res.json(response);
         })
     }
 
     public update_by_id(req: Request, res: Response) {
-        userService.update_by_id(req, (response) => {
+        deletedChatService.update_by_id(req, (response) => {
             res.status(200); // status for the response
             res.json(response);
         })
     }
 
     public get_all(req: Request, res: Response) {
-        userService.get_all(req, (response) => {
+        deletedChatService.get_all(req, (response) => {
+            res.status(200); // status for the response
+            res.json(response);
+        })
+    }
+
+    public get_all_by_owner(req: Request, res: Response) {
+        deletedChatService.get_all_by_owner(req, (response) => {
             res.status(200); // status for the response
             res.json(response);
         })
     }
 
     public get_by_id(req: Request, res: Response) {
-        userService.get_by_id(req, (response) => {
+        deletedChatService.get_by_id(req, (response) => {
             res.status(200); // status for the response
             res.json(response);
         })
@@ -35,16 +43,9 @@ export class UserController {
 
 
     public delete_by_id(req: Request, res: Response) {
-        userService.delete_by_id(req, (response) => {
+        deletedChatService.delete_by_id(req, (response) => {
             res.status(200); // status for the response
             res.json(response);
-        })
-    }
-
-    public login(req: Request, res: Response) {
-        userService.login(req, (response) => {
-            res.status(200); // status for the response
-            res.json(response)
         })
     }
 

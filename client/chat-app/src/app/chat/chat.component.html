@@ -30,7 +30,7 @@
 
 
 <div class="container">
-  <h3 class=" text-center">Messaging</h3>
+  <h3 class=" text-center">Chat</h3>
   <div class="messaging">
         <div class="inbox_msg">
           <div class="inbox_people">
@@ -46,6 +46,9 @@
             </div>
           </div>
           <div class="mesgs" *ngIf="showMsgBox">
+            <div>
+              <button class="btn btn-danger right" type="button" (click)="deleteMessages()"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+            </div>
             <div class="msg_history">
               <div class="incoming_msg" *ngFor="let item of messageArray">
                 <div class="received_msg">
@@ -61,7 +64,7 @@
           <div class="type_msg">
             <div class="input_msg_write">
               <input type="text" class="write_msg" placeholder="Type a message"  [(ngModel)]="messageText"/>
-              <button class="msg_send_btn" type="button" value="send" (click)="sendMessage()"></button>
+              <button class="msg_send_btn" type="button" (click)="sendMessage()"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
             </div>
           </div>
         </div>
