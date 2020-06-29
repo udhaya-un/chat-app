@@ -1,10 +1,10 @@
 # Simple private Chat Application with Socket.io
 
 ##  prerequisite
-      *[Node.js](https://nodejs.org/en/)
-      *[Angular 9](https://angular.io/)
-      *[MongoDb](https://www.mongodb.com/)
-      *[Express](https://expressjs.com/)
+  *[Node.js](https://nodejs.org/en/)
+  *[Angular 9](https://angular.io/)
+  *[MongoDb](https://www.mongodb.com/)
+  *[Express](https://expressjs.com/)
      
 ## Client
          
