@@ -49,11 +49,11 @@ export class LoginComponent implements OnInit {
       return;
     }
     this.apiService.post(`${Constants.apiBaseUrl}/user/login`, this.user).subscribe(user=>{
-      console.log(user)
       if (user !== "Incorrect email or Password"){
         this.appService.saveToken(user.authToken)
       sessionStorage.setItem('email', user.email)
       sessionStorage.setItem('id', user.id)
+      sessionStorage.setItem('user', user.user)
       if(user.authToken){
         this.router.navigate(['/chat'])
       }

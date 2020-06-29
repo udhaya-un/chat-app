@@ -17,6 +17,7 @@ export class ChatComponent implements OnInit {
   showMsgBox: Boolean;
   messageText: String;
   isSender: Boolean;
+  loggedInUser: String;
   messageArray: Array<{ user: String, receiver: String, message: String }> = [];
   sendmessageArray: Array<{ user: String, receiver: String, message: String }> = [];
   all_users: any = []
@@ -31,6 +32,7 @@ export class ChatComponent implements OnInit {
 
   ngOnInit(): void {
     this.user = sessionStorage.getItem('email')
+    this.loggedInUser = sessionStorage.getItem('user')
     this.get_all_user()
   }
 

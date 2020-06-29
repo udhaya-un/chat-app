@@ -107,7 +107,8 @@ export class UserDao {
                     "message": "successfully loggedin!",
                     "authToken": accessToken,
                     "email": response.email,
-                    "id": response._id
+                    "id": response._id,
+                    "user": `${response.firstname} ${response.lastname}`
                 }
                 callback(res);
             }
