@@ -31,6 +31,20 @@ export class ChatDao {
         });
     }
 
+    public read_chat(sender_id, receiver_id, chatData, callback: CallableFunction) {
+        this.Chat.updateMany({
+            $and: [
+                { sender_id: sender_id },
+                { receiver_id: receiver_id}
+            ]
+        }, chatData, { new: true }, (err, chat) => {
+            if (err) {
+                callback(err);
+            } else {
+                callback(chat);
+            }
+        });
+    }
 
     public get_all(callback: CallableFunction) {
         this.Chat.find((err, chat) => {

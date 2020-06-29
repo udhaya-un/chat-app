@@ -26,6 +26,14 @@ export class ChatService {
         })
     }
 
+    public read_chat(req: Request, callback: CallableFunction) {
+        const receiver_id = req.params.receiver_id;
+        const sender_id = req.params.sender_id;
+        const chatData = req.body;
+        chatDao.read_chat(sender_id, receiver_id, chatData, (chat) => {
+            callback(chat)
+        })
+    }
 
     public get_all(req: Request, callback: CallableFunction) {
         chatDao.get_all((chat) => {
@@ -114,4 +122,11 @@ export class ChatService {
         })
     }
 
+    get_read_msg_by_sender(req: Request, callback: CallableFunction){
+        let sender = req.params.sender_id
+        chatDao.get_by_sender_id(sender, (chats) => {
+            callback(chats)
+        })
+
+    }
 }

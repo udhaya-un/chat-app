@@ -27,7 +27,7 @@ import { WebSocketService } from './config/web-socket.service';
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
-    FormsModule,
+    FormsModule
   ],
   providers: [
     ApiService,
@@ -36,7 +36,7 @@ import { WebSocketService } from './config/web-socket.service';
       provide: HTTP_INTERCEPTORS,
       useClass: AppInterceptor,
       multi: true
-    },
+    }
   ],
   bootstrap: [AppComponent]
 })

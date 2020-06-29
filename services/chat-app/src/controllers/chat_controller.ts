@@ -23,6 +23,13 @@ export class ChatController {
         })
     }
 
+    public read_chat(req: Request, res: Response) {
+        chatService.read_chat(req, (response) => {
+            res.status(200); // status for the response
+            res.json(response);
+        })
+    }
+
     public get_all(req: Request, res: Response) {
         chatService.get_all(req, (response) => {
             res.status(200); // status for the response
@@ -54,6 +61,13 @@ export class ChatController {
 
     public delete_chat_by_sender(req: Request, res: Response) {
         chatService.delete_chat_by_sender(req, (response) => {
+            res.status(200); // status for the response
+            res.json(response);
+        })
+    }
+
+    public get_read_msg_by_sender(req: Request, res: Response) {
+        chatService.get_read_msg_by_sender(req, (response) => {
             res.status(200); // status for the response
             res.json(response);
         })
