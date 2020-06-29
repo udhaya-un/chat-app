@@ -20,4 +20,4 @@
 		3. npm run prod - production
 		
 # Database Details
-         Database URL: mongodb://localhost:27017/chat_app (mongodb://{host}:{port}/{database_name)
+         Database URL: mongodb://localhost:27017/chat_app  EX: (mongodb://{host}:{port}/{database_name)
