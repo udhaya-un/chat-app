@@ -18,7 +18,10 @@
 					<div class="input-group form-group mt-4">
 						<input type="password" class="form-control" placeholder="password" [(ngModel)]='user.auth_pass' id="password" formControlName="password" [ngStyle]="{'border-color': borderStyle.auth_pass}">
 					</div>
-					<div class="row form-group justify-content-center mt-12">
+					<div class="input-group form-group mt-4">
+						<label *ngIf="invalidUser" class="justify-content-center" style="color: red;">Invalid email or password</label>
+					</div>
+					<div class="row form-group justify-content-center" style="padding-top: 25px;">
 						<input type="submit" value="Login" (click)='Login()' class="btn float-right login_btn">
 					</div>
 				</form>

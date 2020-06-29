@@ -58,6 +58,14 @@ export class SignupComponent implements OnInit {
     }
     this.user.xid = uuid.v4()
     this.apiService.post(`${Constants.apiBaseUrl}/user/save`, this.user).subscribe(user=>{
+      if(user){
+        this.user.auth_pass = ''
+        this.user.firstname = ''
+        this.user.lastname = ''
+        this.user.email = ''
+        this.user.xid = ''
+        this.user.username = ''
+      }
       
     })
   }

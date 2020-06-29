@@ -16,6 +16,7 @@ export class LoginComponent implements OnInit {
     email: '',
     auth_pass: ''
   };
+  public invalidUser: Boolean;
   submitted = false;
   public errorMessage: String;
   public isErrorMessage: Boolean;
@@ -48,12 +49,19 @@ export class LoginComponent implements OnInit {
       return;
     }
     this.apiService.post(`${Constants.apiBaseUrl}/user/login`, this.user).subscribe(user=>{
-      this.appService.saveToken(user.authToken)
+      console.log(user)
+      if (user !== "Incorrect email or Password"){
+        this.appService.saveToken(user.authToken)
       sessionStorage.setItem('email', user.email)
       sessionStorage.setItem('id', user.id)
       if(user.authToken){
         this.router.navigate(['/chat'])
       }
+      this.invalidUser = false
+      } else {
+        this.invalidUser = true
+      }
+      
     })
   }
 }
