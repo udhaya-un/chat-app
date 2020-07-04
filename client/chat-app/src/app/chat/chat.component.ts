@@ -161,4 +161,11 @@ export class ChatComponent implements OnInit {
       }
     })
   }
+
+  Logout(){
+    sessionStorage.removeItem('authToken')
+    sessionStorage.removeItem('email')
+    sessionStorage.removeItem('id')
+    sessionStorage.removeItem('user')
+  }
 }

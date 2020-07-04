@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { Location } from "@angular/common";
 
 @Component({
   selector: 'app-header',
@@ -10,25 +8,10 @@ import { Location } from "@angular/common";
 export class HeaderComponent implements OnInit {
   route_path: String
   isLoggedIn: Boolean
-  constructor(private router: Router, private location: Location) { 
-    router.events.subscribe(route => {
-      this.route_path = location.path()
-      if (this.route_path === '/chat') {
-        this.isLoggedIn = true
-      } else {
-        this.isLoggedIn = false
-      }
-      
-  });
+  constructor() { 
   
   }
 
   ngOnInit(): void {
-  }
-  Logout(){
-    sessionStorage.removeItem('authToken')
-    sessionStorage.removeItem('email')
-    sessionStorage.removeItem('id')
-    sessionStorage.removeItem('user')
   }
 }
