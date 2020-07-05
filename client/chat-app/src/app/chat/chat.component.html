@@ -44,13 +44,13 @@
   <button type="button" class="btn btn-primary mt-1" (click)="add_contact()">Add<i class="fa fa-plus ml-1"></i></button>
 </div>
 <div class="chat">
-  <h3><span style="color: brown;">Welcome</span> <span class="ml-2"
-      style="color: seagreen;">{{loggedInUser}}</span></h3>
+  <h3><span style="color: brown; font-size: medium;">Welcome</span> <span class="ml-2"
+      style="color: seagreen; font-size: larger;">{{loggedInUser}}</span></h3>
   <div class="messaging">
     <div class="inbox_msg">
       <div class="inbox_people">
         <div class="inbox_chat">
-          <div class="chat_list" *ngFor="let contact of contacts" (click)="selectedUser(user)">
+          <div class="chat_list" *ngFor="let contact of contacts" (click)="selectedUser(contact)">
             <div class="chat_people">
               <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
               <div class="chat_ib">
@@ -58,7 +58,7 @@
                   <h5>{{contact.contact_id.firstname}}
                     <a class="notification">
                       <i class="fa fa-commenting-o fa-lg ml-3" aria-hidden="true"></i>
-                      <span class="badge" *ngIf="user.count>0">{{user.count}}</span>
+                      <span class="badge" *ngIf="contact.count>0">{{contact.count}}</span>
                     </a>
                   </h5>
                 </span>

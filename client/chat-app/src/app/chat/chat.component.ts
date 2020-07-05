@@ -58,9 +58,9 @@ export class ChatComponent implements OnInit {
   }
 
   selectedUser(receiver) {
-    this.receiver_id = receiver._id
-    this.get_all_user_chat(receiver._id)
-    this.receiver = receiver.email
+    this.receiver_id = receiver.contact_id._id
+    this.get_all_user_chat(receiver.contact_id._id)
+    this.receiver = receiver.contact_id.email
     this.showMsgBox = true
     this.read_chat()
   }
@@ -69,11 +69,9 @@ export class ChatComponent implements OnInit {
     this.apiService.get(`${Constants.apiBaseUrl}/user/getall`).subscribe(async data => {
       let users = data.filter(obj => obj.email !== sessionStorage.getItem('email'));
       this.all_users = await users.map(({ _id, username }) => ({ _id, username }));
-
-      // this.all_users['id']= await this.all_users['_id']
     })
     setTimeout(() => {
-      this.check_msg_read_not(this.all_users)
+      this.check_msg_read_not(this.contacts)
     }, 1000)
   }
 
@@ -132,7 +130,7 @@ export class ChatComponent implements OnInit {
           }
         })
         users.forEach(data => {
-          let count = this.get_count(unreadChats, data._id)
+          let count = this.get_count(unreadChats, data.contact_id._id)
           data['count'] = count
           data['']
         })
@@ -141,7 +139,7 @@ export class ChatComponent implements OnInit {
   }
 
   read_msg() {
-    this.check_msg_read_not(this.all_users)
+    this.check_msg_read_not(this.contacts)
   }
 
   get_count(array, receiver) {
@@ -159,7 +157,7 @@ export class ChatComponent implements OnInit {
   read_chat() {
     this.apiService.put(`${Constants.apiBaseUrl}/chat/read/${this.sender_id}/${this.receiver_id}`, { read: true }).subscribe(data => {
       if (data) {
-        this.check_msg_read_not(this.all_users)
+        this.check_msg_read_not(this.contacts)
       }
     })
   }
@@ -179,6 +177,7 @@ export class ChatComponent implements OnInit {
           this.contact = {}
           this.all_users = []
           this.get_all_user()
+          this.added_contacts()
         }
 
       })
