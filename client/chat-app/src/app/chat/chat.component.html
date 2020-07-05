@@ -26,9 +26,9 @@
 </div>
 <!--sidebar end-->
 
-<div class="search">
-  <div class="ng-autocomplete" *ngIf="all_users.length>0">
-    <ng-autocomplete [data]="all_users" [searchKeyword]="keyword" placeHolder="Search the Friend"
+<div class="row search">
+  <div class="ng-autocomplete col-9" *ngIf="all_users.length>0">
+    <ng-autocomplete [data]="all_users" [searchKeyword]="keyword" placeHolder="Search Contact"
       (selected)='selectEvent($event)'
       [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">
     </ng-autocomplete>
@@ -41,9 +41,10 @@
       <div [innerHTML]="notFound"></div>
     </ng-template>
   </div>
-  <button type="button" class="btn btn-primary mt-2" (click)="add_contact()">Add<i class="fa fa-plus ml-1"></i></button>
-
-  <h3 style="padding-top: 1em;"><span style="color: brown;">Welcome</span> <span class="ml-2"
+  <button type="button" class="btn btn-primary mt-1" (click)="add_contact()">Add<i class="fa fa-plus ml-1"></i></button>
+</div>
+<div class="chat">
+  <h3><span style="color: brown;">Welcome</span> <span class="ml-2"
       style="color: seagreen;">{{loggedInUser}}</span></h3>
   <div class="messaging">
     <div class="inbox_msg">
