@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { WebSocketService } from '../config/web-socket.service';
 import { ApiService } from '../config/api.service';
 import { Constants } from '../config/Constant';
-import { retry } from 'rxjs/operators';
+import { retry, first } from 'rxjs/operators';
 
 
 @Component({
@@ -17,9 +17,12 @@ export class ChatComponent implements OnInit {
   receiver_id: String;
   sender_id: String;
   showMsgBox: Boolean;
+  contact: any;
   messageText: String;
+  contacts: any = [];
   isSender: Boolean;
   loggedInUser: String;
+  keyword: String = 'username';
   users_unread_chat: any = []
   messageArray: Array<{ user: String, receiver: String, message: String }> = [];
   sendmessageArray: Array<{ user: String, receiver: String, message: String }> = [];
@@ -31,14 +34,14 @@ export class ChatComponent implements OnInit {
         this.messageArray.push(event)
       }
     })
+    this.get_all_user()
   }
 
   ngOnInit(): void {
     this.user = sessionStorage.getItem('email')
     this.sender_id = sessionStorage.getItem('id')
     this.loggedInUser = sessionStorage.getItem('user')
-    this.get_all_user()
-    // this.check_msg_read_not()
+    this.added_contacts()
   }
 
   sendMessage() {
@@ -62,15 +65,14 @@ export class ChatComponent implements OnInit {
     this.read_chat()
   }
 
-   get_all_user() {
-    this.apiService.get(`${Constants.apiBaseUrl}/user/getall`).subscribe(data => {
-      data.forEach(usr => {
-        if (usr.email !== sessionStorage.getItem('email')) {
-          this.all_users.push(usr)
-        }
-      });
+  get_all_user() {
+    this.apiService.get(`${Constants.apiBaseUrl}/user/getall`).subscribe(async data => {
+      let users = data.filter(obj => obj.email !== sessionStorage.getItem('email'));
+      this.all_users = await users.map(({ _id, username }) => ({ _id, username }));
+
+      // this.all_users['id']= await this.all_users['_id']
     })
-    setTimeout(()=>{
+    setTimeout(() => {
       this.check_msg_read_not(this.all_users)
     }, 1000)
   }
@@ -124,48 +126,71 @@ export class ChatComponent implements OnInit {
     setInterval(() => {
       this.apiService.get(`${Constants.apiBaseUrl}/chat/unread/${this.sender_id}`).subscribe(data => {
         let unreadChats = []
-        data.map(d=>{
-          if(this.sender_id === d.receiver_id && d.read === false){
+        data.map(d => {
+          if (this.sender_id === d.receiver_id && d.read === false) {
             unreadChats.push(d.sender_id)
           }
         })
-        users.forEach(data=>{
-         let count = this.get_count(unreadChats, data._id)
-         data['count'] = count
-         data['']
+        users.forEach(data => {
+          let count = this.get_count(unreadChats, data._id)
+          data['count'] = count
+          data['']
         })
       })
-  }, 2000)
+    }, 2000)
   }
 
-  read_msg(){
+  read_msg() {
     this.check_msg_read_not(this.all_users)
   }
 
-  get_count(array, receiver){
+  get_count(array, receiver) {
     let count = 0
     this.users_unread_chat = []
 
     array.forEach((v) => {
-      if (v === receiver){
+      if (v === receiver) {
         count++
       }
     })
     return count
   }
 
-  read_chat(){
-    this.apiService.put(`${Constants.apiBaseUrl}/chat/read/${this.sender_id}/${this.receiver_id}`, {read:true}).subscribe(data => {
-      if (data){
+  read_chat() {
+    this.apiService.put(`${Constants.apiBaseUrl}/chat/read/${this.sender_id}/${this.receiver_id}`, { read: true }).subscribe(data => {
+      if (data) {
         this.check_msg_read_not(this.all_users)
       }
     })
   }
 
-  Logout(){
+  Logout() {
     sessionStorage.removeItem('authToken')
     sessionStorage.removeItem('email')
     sessionStorage.removeItem('id')
     sessionStorage.removeItem('user')
+  }
+
+
+  add_contact() {
+    if (this.contact) {
+      this.apiService.post(`${Constants.apiBaseUrl}/chat/add_contact`, this.contact).subscribe(data => {
+        if (data) {
+          this.contact = {}
+          this.all_users = []
+          this.get_all_user()
+        }
+
+      })
+    }
+  }
+
+  added_contacts() {
+    this.apiService.get(`${Constants.apiBaseUrl}/chat/read_added_contact/${this.sender_id}`).subscribe(contacts => {
+      this.contacts = contacts
+    })
+  }
+  selectEvent(item) {
+    this.contact = { owner_id: this.sender_id, contact_id: item._id }
   }
 }

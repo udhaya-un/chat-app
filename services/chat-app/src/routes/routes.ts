@@ -1,12 +1,14 @@
 import { UserController } from "../controllers/user_controller";
 import { ChatController } from "../controllers/chat_controller";
 import { DeletedChatController } from "../controllers/deleted_chat_controller";
+import { ContactController } from "../controllers/contact_controller";
 
 export class Routes {
 
     public userController: UserController = new UserController();
     public chatController: ChatController = new ChatController();
     public deletedChatController: DeletedChatController = new DeletedChatController();
+    public contactController: ContactController = new ContactController();
 
     public routes(base, app): void {
 
@@ -25,6 +27,10 @@ export class Routes {
         app.route(`${base}/chat/unread/:sender_id/`).get(this.chatController.get_read_msg_by_sender);
 
         app.route(`${base}/chat/deleted_chat_by_sender/:sender_id`).get(this.deletedChatController.get_all_by_owner);
+        
+        app.route(`${base}/chat/add_contact`).post(this.contactController.save);
+        app.route(`${base}/chat/read_added_contact/:owner_id`).get(this.contactController.read_contact_by_owner);
+        
 
 
     }

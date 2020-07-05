@@ -27,30 +27,34 @@
 <!--sidebar end-->
 
 <div class="search">
-  <!-- <div class="container"> -->
-  <!-- <h3 class=" text-center">Chat</h3> -->
-  <div class="row">
-    <div class="col-sm-8 input-icons"> 
-      <i class="fa fa-search icon" aria-hidden="true"></i>
-      <input class="input-field rounded" type="text"> 
+  <div class="ng-autocomplete" *ngIf="all_users.length>0">
+    <ng-autocomplete [data]="all_users" [searchKeyword]="keyword" placeHolder="Search the Friend"
+      (selected)='selectEvent($event)'
+      [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">
+    </ng-autocomplete>
+
+    <ng-template #itemTemplate let-item>
+      <a [innerHTML]="item.username"></a>
+    </ng-template>
+
+    <ng-template #notFoundTemplate let-notFound>
+      <div [innerHTML]="notFound"></div>
+    </ng-template>
   </div>
-  <div class="col-sm-4">
-    <button type="button" class="btn btn-primary mt-2">Add<i class="fa fa-plus ml-1"></i></button>
-  </div>
-  </div>
-  
-  <h3 style="padding-top: 1em;"><span style="color: brown;">Welcome</span> <span
-      class="ml-2" style="color: seagreen;">{{loggedInUser}}</span></h3>
+  <button type="button" class="btn btn-primary mt-2" (click)="add_contact()">Add<i class="fa fa-plus ml-1"></i></button>
+
+  <h3 style="padding-top: 1em;"><span style="color: brown;">Welcome</span> <span class="ml-2"
+      style="color: seagreen;">{{loggedInUser}}</span></h3>
   <div class="messaging">
     <div class="inbox_msg">
       <div class="inbox_people">
         <div class="inbox_chat">
-          <div class="chat_list" *ngFor="let user of all_users" (click)="selectedUser(user)">
+          <div class="chat_list" *ngFor="let contact of contacts" (click)="selectedUser(user)">
             <div class="chat_people">
               <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
               <div class="chat_ib">
                 <span>
-                  <h5>{{user.firstname}} {{user.lastname}}
+                  <h5>{{contact.contact_id.firstname}}
                     <a class="notification">
                       <i class="fa fa-commenting-o fa-lg ml-3" aria-hidden="true"></i>
                       <span class="badge" *ngIf="user.count>0">{{user.count}}</span>
@@ -93,4 +97,4 @@
     </div>
   </div>
 
-  </div>
+</div>

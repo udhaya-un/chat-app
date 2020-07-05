@@ -12,6 +12,7 @@ import { ChatComponent } from './chat/chat.component';
 import { AppInterceptor } from './app.interceptor';
 import { ApiService } from './config/api.service';
 import { WebSocketService } from './config/web-socket.service';
+import {AutocompleteLibModule} from 'angular-ng-autocomplete';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { WebSocketService } from './config/web-socket.service';
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    AutocompleteLibModule
   ],
   providers: [
     ApiService,
